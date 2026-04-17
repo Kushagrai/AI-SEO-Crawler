@@ -1,0 +1,22 @@
+{
+  "name": "ai-seo-crawler",
+  "version": "2.0.0",
+  "type": "module",
+  "description": "AI SEO Crawler — audits websites for AI search visibility (llms.txt, E-E-A-T, schema, bot access)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "serve": "node server.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "express": "^4.21.2",
+    "chalk": "^5.3.0",
+    "cheerio": "^1.0.0",
+    "cli-table3": "^0.6.5",
+    "ora": "^8.1.1",
+    "playwright": "^1.50.0",
+    "robots-parser": "^3.0.1",
+    "xml2js": "^0.6.2"
+  }
+}

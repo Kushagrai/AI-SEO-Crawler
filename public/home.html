@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI SEO CRAWLER — Audit Your Site for AI Search</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+  <style>
+    /* ── Override app's main layout for this page ── */
+    main {
+      max-width: none;
+      padding: 0;
+      gap: 0;
+      display: block;
+    }
+
+    /* ── Shared section container ── */
+    .pg {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    /* ═══════════════════════════════════════════
+       HERO BENTO
+    ═══════════════════════════════════════════ */
+    .hero-bento {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 14px;
+    }
+
+    /* ── Shared bento cell base ── */
+    .hc {
+      border: var(--border);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── Main headline cell ── */
+    .hc-main {
+      grid-row: 1 / 3;
+      background: var(--black);
+      padding: 2.75rem 2.75rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 500px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Diagonal stripe accent — subtle background texture */
+    .hc-main::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 40px,
+        rgba(255, 224, 0, 0.02) 40px,
+        rgba(255, 224, 0, 0.02) 41px
+      );
+      pointer-events: none;
+    }
+
+    .hc-eyebrow {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+      color: rgba(255, 255, 255, 0.3);
+      margin-bottom: 1.75rem;
+    }
+
+    .hc-headline {
+      font-size: clamp(3.2rem, 5.5vw, 6rem);
+      font-weight: 700;
+      line-height: 0.93;
+      letter-spacing: -0.035em;
+      color: var(--yellow);
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .hc-sub {
+      font-size: 0.9rem;
+      font-weight: 400;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.4);
+      max-width: 400px;
+      margin-bottom: 2.75rem;
+      letter-spacing: 0.01em;
+    }
+
+    .hc-cta {
+      display: inline-block;
+      padding: 1rem 2.25rem;
+      background: var(--yellow);
+      border: var(--border);
+      box-shadow: var(--shadow);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--black);
+      text-decoration: none;
+      align-self: flex-start;
+      will-change: transform, box-shadow;
+    }
+
+    /* ── Score preview cell ── */
+    .hc-score {
+      background: var(--yellow);
+      padding: 2rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hc-score-eyebrow {
+      font-size: 0.53rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: rgba(0, 0, 0, 0.38);
+      margin-bottom: 0.25rem;
+    }
+
+    .hc-score-num {
+      font-size: 5.5rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.05em;
+      color: var(--black);
+    }
+
+    .hc-score-denom {
+      font-size: 1rem;
+      font-weight: 700;
+      color: rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.02em;
+      align-self: flex-end;
+      margin-bottom: 0.6rem;
+    }
+
+    .hc-score-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.3rem;
+    }
+
+    .hc-score-grade {
+      font-size: 2.2rem;
+      font-weight: 700;
+      width: 64px;
+      height: 64px;
+      border: 3px solid var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.5rem;
+      will-change: transform;
+    }
+
+    .hc-score-label {
+      font-size: 0.52rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: rgba(0, 0, 0, 0.38);
+    }
+
+    /* ── Stat cells ── */
+    .hc-stat {
+      background: var(--white);
+      padding: 1.75rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 0.2rem;
+      will-change: transform, box-shadow;
+    }
+
+    .hc-stat-alt { background: var(--black); }
+
+    .hc-stat-num {
+      font-size: 3.8rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.045em;
+      color: var(--black);
+    }
+
+    .hc-stat-alt .hc-stat-num { color: var(--yellow); }
+
+    .hc-stat-unit {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--black);
+    }
+
+    .hc-stat-alt .hc-stat-unit { color: rgba(255, 255, 255, 0.45); }
+
+    .hc-stat-desc {
+      font-size: 0.53rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: #aaa;
+      margin-top: 0.15rem;
+    }
+
+    .hc-stat-alt .hc-stat-desc { color: rgba(255, 255, 255, 0.25); }
+
+    /* ═══════════════════════════════════════════
+       TICKER
+    ═══════════════════════════════════════════ */
+    .ticker-outer {
+      background: var(--yellow);
+      border-top: var(--border);
+      border-bottom: var(--border);
+      overflow: hidden;
+      padding: 0.85rem 0;
+      margin-top: 2.5rem;
+    }
+
+    .ticker-track {
+      display: inline-flex;
+      white-space: nowrap;
+      animation: ticker-run 22s linear infinite;
+    }
+
+    .ticker-item {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      color: var(--black);
+      padding: 0 2.25rem;
+    }
+
+    .ticker-dot {
+      font-size: 0.7rem;
+      color: rgba(0, 0, 0, 0.28);
+    }
+
+    @keyframes ticker-run {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ═══════════════════════════════════════════
+       SECTION HEADER
+    ═══════════════════════════════════════════ */
+    .sec-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .sec-label {
+      display: block;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+      color: #999;
+      margin-bottom: 0.6rem;
+    }
+
+    .sec-title {
+      font-size: clamp(1.9rem, 3.5vw, 2.9rem);
+      font-weight: 700;
+      line-height: 1.02;
+      letter-spacing: -0.025em;
+    }
+
+    /* ═══════════════════════════════════════════
+       FEATURES BENTO
+    ═══════════════════════════════════════════ */
+    .feat-bento {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    /* Intentionally asymmetric layout */
+    .feat-w2 { grid-column: span 2; }
+    .feat-w3 { grid-column: span 3; }
+
+    .feat-card {
+      border: var(--border);
+      box-shadow: var(--shadow);
+      background: var(--white);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      will-change: transform, box-shadow;
+    }
+
+    .feat-card-dark {
+      background: var(--black);
+    }
+
+    .feat-card-accent {
+      background: var(--yellow);
+    }
+
+    .feat-icon {
+      display: block;
+      width: 52px;
+      height: 52px;
+      flex-shrink: 0;
+    }
+
+    .feat-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* currentColor routing for SVG icons */
+    .feat-card         { color: var(--black); }
+    .feat-card-dark    { color: var(--yellow); }
+    .feat-card-accent  { color: var(--black); }
+
+    .feat-name {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--black);
+    }
+
+    .feat-card-dark .feat-name { color: var(--yellow); }
+    .feat-card-accent .feat-name { color: rgba(0, 0, 0, 0.5); }
+
+    .feat-desc {
+      font-size: 0.83rem;
+      font-weight: 400;
+      line-height: 1.65;
+      color: #555;
+      flex: 1;
+    }
+
+    .feat-card-dark .feat-desc { color: rgba(255, 255, 255, 0.4); }
+    .feat-card-accent .feat-desc { color: rgba(0, 0, 0, 0.6); }
+
+    .feat-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.85rem;
+      border-top: 2px solid rgba(0, 0, 0, 0.08);
+      margin-top: auto;
+    }
+
+    .feat-card-dark .feat-footer { border-top-color: rgba(255, 255, 255, 0.07); }
+    .feat-card-accent .feat-footer { border-top-color: rgba(0, 0, 0, 0.12); }
+
+    .feat-pts-label {
+      font-size: 0.52rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: #bbb;
+    }
+
+    .feat-card-dark .feat-pts-label { color: rgba(255, 255, 255, 0.2); }
+    .feat-card-accent .feat-pts-label { color: rgba(0, 0, 0, 0.3); }
+
+    .feat-pts {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 0.2rem 0.6rem;
+      background: var(--black);
+      color: var(--yellow);
+    }
+
+    .feat-card-dark .feat-pts { background: var(--yellow); color: var(--black); }
+    .feat-card-accent .feat-pts { background: var(--black); color: var(--yellow); }
+
+    /* E-E-A-T wide card layout */
+    .feat-card.feat-w3 {
+      flex-direction: row;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .feat-w3-left {
+      flex-shrink: 0;
+    }
+
+    .feat-w3-signals {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .signal-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 0.4rem 0.9rem;
+      border: 2px solid var(--black);
+      background: var(--bg);
+    }
+
+    .signal-chip .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dot-ok  { background: var(--green); }
+    .dot-bad { background: var(--red); }
+
+    /* ═══════════════════════════════════════════
+       HOW IT WORKS
+    ═══════════════════════════════════════════ */
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: var(--border);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .how-step {
+      padding: 2.75rem 2.25rem;
+      border-right: var(--border);
+      background: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .how-step:last-child { border-right: none; }
+
+    .how-step-highlight { background: var(--yellow); }
+
+    .how-bg-num {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.75rem;
+      font-size: 6rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.05em;
+      color: rgba(0, 0, 0, 0.055);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .how-step-highlight .how-bg-num { color: rgba(0, 0, 0, 0.07); }
+
+    .how-step-label {
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      color: #aaa;
+      margin-bottom: 1.1rem;
+      display: block;
+    }
+
+    .how-step-highlight .how-step-label { color: rgba(0, 0, 0, 0.4); }
+
+    .how-step-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .how-step-desc {
+      font-size: 0.83rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: #555;
+    }
+
+    .how-step-highlight .how-step-desc { color: rgba(0, 0, 0, 0.6); }
+
+    /* ═══════════════════════════════════════════
+       SOCIAL PROOF STRIP
+    ═══════════════════════════════════════════ */
+    .proof-strip {
+      background: var(--black);
+      border-top: var(--border);
+      border-bottom: var(--border);
+      padding: 2.5rem 2rem;
+    }
+
+    .proof-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+
+    .proof-item {
+      padding: 0 2.5rem;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .proof-item:first-child { padding-left: 0; }
+    .proof-item:last-child  { padding-right: 0; border-right: none; }
+
+    .proof-num {
+      font-size: 2.75rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--yellow);
+    }
+
+    .proof-label {
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: rgba(255, 255, 255, 0.28);
+    }
+
+    /* ═══════════════════════════════════════════
+       CTA BLOCK
+    ═══════════════════════════════════════════ */
+    .cta-block {
+      background: var(--black);
+      border-top: var(--border);
+      padding: 5.5rem 2rem 5rem;
+      text-align: center;
+    }
+
+    .cta-eyebrow {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      color: rgba(255, 255, 255, 0.22);
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-title {
+      font-size: clamp(3rem, 6vw, 6rem);
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      color: var(--yellow);
+      margin-bottom: 1.75rem;
+    }
+
+    .cta-sub {
+      font-size: 0.9rem;
+      font-weight: 400;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.32);
+      max-width: 440px;
+      margin: 0 auto 3rem;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 1.15rem 3.25rem;
+      background: var(--yellow);
+      border: var(--border);
+      box-shadow: var(--shadow-lg);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--black);
+      text-decoration: none;
+      will-change: transform, box-shadow;
+    }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════ */
+    .home-footer {
+      background: var(--black);
+      border-top: var(--border);
+      padding: 1.5rem 2rem;
+    }
+
+    .home-footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--yellow);
+    }
+
+    .footer-copy {
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: rgba(255, 255, 255, 0.18);
+    }
+
+    .footer-nav { display: flex; gap: 0.75rem; }
+
+    .footer-btn {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-decoration: none;
+      padding: 0.35rem 0.85rem;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      transition: background 0.1s;
+    }
+
+    .footer-btn:hover { background: rgba(255, 255, 255, 0.08); }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .feat-bento { grid-template-columns: repeat(2, 1fr); }
+      .feat-w2 { grid-column: span 1; }
+      .feat-w3 { grid-column: span 2; }
+      .feat-card.feat-w3 { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .proof-inner { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+      .proof-item { border-right: none; padding: 0; }
+    }
+
+    @media (max-width: 900px) {
+      .hero-bento { grid-template-columns: 1fr 1fr; }
+      .hc-main { grid-row: auto; min-height: 380px; }
+      .hc-score { grid-column: span 2; }
+      .how-grid { grid-template-columns: 1fr; }
+      .how-step { border-right: none; border-bottom: var(--border); }
+      .how-step:last-child { border-bottom: none; }
+    }
+
+    @media (max-width: 640px) {
+      .pg { padding: 2rem 1.25rem; }
+      .hero-bento { grid-template-columns: 1fr; gap: 10px; }
+      .hc-score { grid-column: auto; }
+      .feat-bento { grid-template-columns: 1fr; }
+      .feat-w2, .feat-w3 { grid-column: span 1; }
+      .cta-title { font-size: 2.75rem; }
+      .sec-header { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────────────── -->
+  <header id="site-header">
+    <div class="header-inner">
+      <a href="home.html" style="text-decoration:none"><span class="logo">AI SEO CRAWLER</span></a>
+      <span class="tagline">AUDIT YOUR SITE FOR AI SEARCH VISIBILITY</span>
+      <nav class="header-nav">
+        <a href="about.html" class="nav-btn">ABOUT</a>
+        <a href="index.html" class="nav-btn" style="margin-left:8px;background:var(--yellow);color:var(--black)">LAUNCH APP →</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ── Hero Bento ─────────────────────────────── -->
+    <div class="pg" style="padding-bottom:0">
+      <div class="hero-bento" id="hero-bento">
+
+        <!-- Headline cell -->
+        <div class="hc hc-main" id="hc-main">
+          <div>
+            <div class="hc-eyebrow">AI SEARCH VISIBILITY AUDIT</div>
+            <h1 class="hc-headline">AUDIT<br>YOUR SITE<br>FOR AI<br>SEARCH.</h1>
+            <p class="hc-sub">See exactly how ChatGPT, Perplexity &amp; Google SGE read — and cite — your content.</p>
+          </div>
+          <a href="index.html" class="hc-cta" id="hero-cta">START FREE AUDIT →</a>
+        </div>
+
+        <!-- Score cell -->
+        <div class="hc hc-score" id="hc-score">
+          <div class="hc-score-eyebrow">EXAMPLE AI SCORE</div>
+          <div class="hc-score-row">
+            <span class="hc-score-num" data-count="98" id="score-num">0</span>
+            <span class="hc-score-denom">/100</span>
+          </div>
+          <div class="hc-score-grade" id="score-grade">A</div>
+          <div class="hc-score-label">OVERALL GRADE</div>
+        </div>
+
+        <!-- Pages stat -->
+        <div class="hc hc-stat" id="hc-stat-1">
+          <div class="hc-stat-num" data-count="100" id="stat-pages">0</div>
+          <div class="hc-stat-unit">PAGES</div>
+          <div class="hc-stat-desc">MAX PAGES CRAWLED</div>
+        </div>
+
+        <!-- Bots stat — dark -->
+        <div class="hc hc-stat hc-stat-alt" id="hc-stat-2">
+          <div class="hc-stat-num" data-count="8" id="stat-bots">0</div>
+          <div class="hc-stat-unit">AI BOTS</div>
+          <div class="hc-stat-desc">TRACKED &amp; ANALYZED</div>
+        </div>
+
+        <!-- Dimensions stat -->
+        <div class="hc hc-stat" id="hc-stat-3">
+          <div class="hc-stat-num" data-count="6" id="stat-dims">0</div>
+          <div class="hc-stat-unit">DIMENSIONS</div>
+          <div class="hc-stat-desc">OF VISIBILITY SCORED</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Ticker ──────────────────────────────────── -->
+    <div class="ticker-outer" id="ticker">
+      <div class="ticker-track">
+        <span class="ticker-item">ROBOTS.TXT</span><span class="ticker-dot">·</span>
+        <span class="ticker-item">LLMS.TXT</span><span class="ticker-dot">·</span>
+        <span class="ticker-item">SITEMAP.XML</span><span class="ticker-dot">·</span>
+        <span class="ticker-item">SCHEMA.ORG</span><span class="ticker-dot">·</span>
+        <span class="ticker-item">E-E-A-T SIGNALS</span><span class="ticker-dot">·</span>
+        <span class="ticker-item">SEMANTIC HTML</span><span class="ticker-dot">·</span>
+        <span class="ticker-item">AI BOT ACCESS</span><span class="ticker-dot">·</span>
+        <span class="ticker-item">CRAWL DEPTH</span><span class="ticker-dot">·</span>
+        <span class="ticker-item">ROBOTS.TXT</span><span class="ticker-dot">·</span>
+        <span class="ticker-item">LLMS.TXT</span><span class="ticker-dot">·</span>
+        <span class="ticker-item">SITEMAP.XML</span><span class="ticker-dot">·</span>
+        <span class="ticker-item">SCHEMA.ORG</span><span class="ticker-dot">·</span>
+        <span class="ticker-item">E-E-A-T SIGNALS</span><span class="ticker-dot">·</span>
+        <span class="ticker-item">SEMANTIC HTML</span><span class="ticker-dot">·</span>
+        <span class="ticker-item">AI BOT ACCESS</span><span class="ticker-dot">·</span>
+        <span class="ticker-item">CRAWL DEPTH</span><span class="ticker-dot">·</span>
+      </div>
+    </div>
+
+    <!-- ── Feature Cards ──────────────────────────── -->
+    <div class="pg">
+      <div class="sec-header" id="feat-header">
+        <div>
+          <span class="sec-label">WHAT WE ANALYZE</span>
+          <h2 class="sec-title">SIX DIMENSIONS<br>OF AI VISIBILITY</h2>
+        </div>
+        <a href="index.html" class="nav-btn" style="font-size:.68rem;padding:.55rem 1.2rem">VIEW FULL AUDIT →</a>
+      </div>
+
+      <div class="feat-bento" id="feat-bento">
+
+        <!-- Robots.txt — 2 cols, dark -->
+        <div class="feat-card feat-card-dark feat-w2">
+          <div class="feat-icon">
+            <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Antenna -->
+              <rect x="22" y="0" width="8" height="5" fill="currentColor"/>
+              <line x1="26" y1="5" x2="26" y2="12" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"/>
+              <!-- Head -->
+              <rect x="4" y="12" width="44" height="23" stroke="currentColor" stroke-width="2.5"/>
+              <!-- Eyes -->
+              <rect x="11" y="18" width="11" height="9" fill="currentColor"/>
+              <rect x="30" y="18" width="11" height="9" fill="currentColor"/>
+              <!-- Mouth grid -->
+              <rect x="12" y="30" width="28" height="4" stroke="currentColor" stroke-width="2"/>
+              <line x1="21" y1="30" x2="21" y2="34" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+              <line x1="30" y1="30" x2="30" y2="34" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+              <!-- Neck -->
+              <rect x="20" y="35" width="12" height="6" stroke="currentColor" stroke-width="2"/>
+              <!-- Body -->
+              <rect x="7" y="41" width="38" height="11" stroke="currentColor" stroke-width="2.5"/>
+              <!-- Body indicator lights -->
+              <circle cx="17" cy="47" r="2.5" fill="currentColor"/>
+              <circle cx="26" cy="47" r="2.5" fill="currentColor"/>
+              <circle cx="35" cy="47" r="2.5" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="feat-name">ROBOTS.TXT &amp; AI BOT ACCESS</div>
+          <div class="feat-desc">Validates which AI crawlers can access your site — ChatGPTBot, GPTBot, Googlebot-Extended, Anthropic-AI, PerplexityBot and more. Flags accidental blocks that silently hurt your citation potential.</div>
+          <div class="feat-footer">
+            <span class="feat-pts-label">SCORING WEIGHT</span>
+            <span class="feat-pts">15 PTS</span>
+          </div>
+        </div>
+
+        <!-- llms.txt -->
+        <div class="feat-card">
+          <div class="feat-icon">
+            <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Document body with folded corner -->
+              <path d="M6 2 H36 L46 12 V50 H6 Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="miter"/>
+              <!-- Fold corner -->
+              <polyline points="36,2 36,12 46,12" stroke="currentColor" stroke-width="2.5" fill="none"/>
+              <!-- Text lines -->
+              <line x1="13" y1="22" x2="39" y2="22" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"/>
+              <line x1="13" y1="29" x2="39" y2="29" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"/>
+              <line x1="13" y1="36" x2="30" y2="36" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"/>
+              <!-- AI zigzag signal -->
+              <polyline points="13,44 18,39 23,44 28,39 33,44 38,39 42,44" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linejoin="miter" stroke-linecap="square"/>
+            </svg>
+          </div>
+          <div class="feat-name">LLMS.TXT</div>
+          <div class="feat-desc">Checks for the emerging llms.txt standard — the AI-era equivalent of robots.txt — telling language models what your site is about and how to cite it.</div>
+          <div class="feat-footer">
+            <span class="feat-pts-label">SCORING WEIGHT</span>
+            <span class="feat-pts">10 PTS</span>
+          </div>
+        </div>
+
+        <!-- Sitemap -->
+        <div class="feat-card">
+          <div class="feat-icon">
+            <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Root node -->
+              <rect x="17" y="2" width="18" height="11" stroke="currentColor" stroke-width="2.5"/>
+              <!-- Stem to horizontal bar -->
+              <line x1="26" y1="13" x2="26" y2="20" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+              <!-- Horizontal bar -->
+              <line x1="7" y1="20" x2="45" y2="20" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+              <!-- Three vertical stems -->
+              <line x1="7"  y1="20" x2="7"  y2="28" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+              <line x1="26" y1="20" x2="26" y2="28" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+              <line x1="45" y1="20" x2="45" y2="28" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+              <!-- Three child nodes -->
+              <rect x="1"  y="28" width="12" height="9" stroke="currentColor" stroke-width="2.5"/>
+              <rect x="20" y="28" width="12" height="9" stroke="currentColor" stroke-width="2.5"/>
+              <rect x="39" y="28" width="12" height="9" stroke="currentColor" stroke-width="2.5"/>
+              <!-- Center node branches -->
+              <line x1="26" y1="37" x2="26" y2="43" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+              <line x1="17" y1="43" x2="35" y2="43" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+              <line x1="17" y1="43" x2="17" y2="50" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+              <line x1="35" y1="43" x2="35" y2="50" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+              <rect x="12" y="47" width="10" height="5" stroke="currentColor" stroke-width="2"/>
+              <rect x="30" y="47" width="10" height="5" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="feat-name">SITEMAP.XML</div>
+          <div class="feat-desc">Verifies your sitemap exists, is valid XML, and all listed URLs resolve — giving AI engines a complete, trustworthy map of your content.</div>
+          <div class="feat-footer">
+            <span class="feat-pts-label">SCORING WEIGHT</span>
+            <span class="feat-pts">15 PTS</span>
+          </div>
+        </div>
+
+        <!-- Semantics — 2 cols, accent -->
+        <div class="feat-card feat-card-accent feat-w2">
+          <div class="feat-icon">
+            <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Large opening bracket < -->
+              <polyline points="18,3 4,26 18,49" stroke="currentColor" stroke-width="5" fill="none" stroke-linejoin="miter" stroke-linecap="square"/>
+              <!-- Slash / -->
+              <line x1="22" y1="49" x2="30" y2="3" stroke="currentColor" stroke-width="3.5" stroke-linecap="square"/>
+              <!-- Large closing bracket > -->
+              <polyline points="34,3 48,26 34,49" stroke="currentColor" stroke-width="5" fill="none" stroke-linejoin="miter" stroke-linecap="square"/>
+            </svg>
+          </div>
+          <div class="feat-name">SEMANTIC HTML</div>
+          <div class="feat-desc">Audits heading hierarchy, meta descriptions, canonical tags, image alt text, and content depth across every crawled page. Proper semantics let AI models understand and accurately attribute your content.</div>
+          <div class="feat-footer">
+            <span class="feat-pts-label">SCORING WEIGHT</span>
+            <span class="feat-pts">25 PTS</span>
+          </div>
+        </div>
+
+        <!-- Schema -->
+        <div class="feat-card">
+          <div class="feat-icon">
+            <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Connecting lines (drawn first, behind nodes) -->
+              <line x1="26" y1="11" x2="26" y2="20" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+              <line x1="26" y1="32" x2="26" y2="41" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+              <line x1="11" y1="26" x2="20" y2="26" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+              <line x1="32" y1="26" x2="41" y2="26" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+              <line x1="13" y1="13" x2="20" y2="20" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="39" y1="13" x2="32" y2="20" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="13" y1="39" x2="20" y2="32" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="39" y1="39" x2="32" y2="32" stroke="currentColor" stroke-width="1.5"/>
+              <!-- Center node — filled square -->
+              <rect x="20" y="20" width="12" height="12" fill="currentColor"/>
+              <!-- Cardinal nodes — filled circles -->
+              <circle cx="26" cy="6"  r="5" fill="currentColor"/>
+              <circle cx="26" cy="46" r="5" fill="currentColor"/>
+              <circle cx="6"  cy="26" r="5" fill="currentColor"/>
+              <circle cx="46" cy="26" r="5" fill="currentColor"/>
+              <!-- Corner nodes — hollow circles -->
+              <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
+              <circle cx="42" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
+              <circle cx="10" cy="42" r="4" stroke="currentColor" stroke-width="2"/>
+              <circle cx="42" cy="42" r="4" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="feat-name">SCHEMA.ORG</div>
+          <div class="feat-desc">Detects Article, Organization, FAQ, HowTo and other structured data markup — the primary language AI search engines use to understand content context.</div>
+          <div class="feat-footer">
+            <span class="feat-pts-label">SCORING WEIGHT</span>
+            <span class="feat-pts">20 PTS</span>
+          </div>
+        </div>
+
+        <!-- E-E-A-T — full width -->
+        <div class="feat-card feat-w3" id="eeat-card">
+          <div class="feat-w3-left">
+            <div class="feat-icon">
+              <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Shield body -->
+                <path d="M26 2 L47 10 L47 27 C47 39 37 47 26 51 C15 47 5 39 5 27 L5 10 Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="miter"/>
+                <!-- Star -->
+                <polygon points="26,14 28.6,22 37,22 30.7,27 33.3,35 26,30 18.7,35 21.3,27 15,22 23.4,22" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="feat-name" style="margin-top:.6rem">E-E-A-T SIGNALS</div>
+            <div style="margin-top:.5rem">
+              <span class="feat-pts-label" style="font-size:.52rem;font-weight:700;letter-spacing:.18em;color:#bbb">SCORING WEIGHT</span><br>
+              <span class="feat-pts" style="margin-top:.25rem;display:inline-block">15 PTS</span>
+            </div>
+          </div>
+          <div>
+            <div class="feat-desc" style="margin-bottom:1rem">Experience, Expertise, Authority &amp; Trust signals — the factors AI citation engines use to decide whether to recommend your content.</div>
+            <div class="feat-w3-signals">
+              <span class="signal-chip"><span class="dot dot-ok"></span>AUTHOR PAGE</span>
+              <span class="signal-chip"><span class="dot dot-ok"></span>ABOUT PAGE</span>
+              <span class="signal-chip"><span class="dot dot-ok"></span>CONTACT INFO</span>
+              <span class="signal-chip"><span class="dot dot-bad"></span>PRIVACY POLICY</span>
+              <span class="signal-chip"><span class="dot dot-ok"></span>EXTERNAL LINKS</span>
+              <span class="signal-chip"><span class="dot dot-bad"></span>SOCIAL PROFILES</span>
+              <span class="signal-chip"><span class="dot dot-ok"></span>TERMS OF SERVICE</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── How It Works ────────────────────────────── -->
+    <div class="pg" style="padding-top:0">
+      <div class="sec-header" id="how-header">
+        <div>
+          <span class="sec-label">THE PROCESS</span>
+          <h2 class="sec-title">HOW IT WORKS</h2>
+        </div>
+      </div>
+      <div class="how-grid" id="how-grid">
+
+        <div class="how-step" id="how-1">
+          <span class="how-bg-num">1</span>
+          <span class="how-step-label">STEP ONE</span>
+          <div class="how-step-title">ENTER YOUR URL</div>
+          <div class="how-step-desc">Paste any website URL and configure crawl depth, page limit, and concurrency. Works on any public website — no setup, no account needed.</div>
+        </div>
+
+        <div class="how-step" id="how-2">
+          <span class="how-bg-num">2</span>
+          <span class="how-step-label">STEP TWO</span>
+          <div class="how-step-title">DEEP CRAWL RUNS</div>
+          <div class="how-step-desc">The engine follows your site link by link, analyzing every page in real-time — infrastructure files, structured data, AI bot permissions, semantic signals.</div>
+        </div>
+
+        <div class="how-step how-step-highlight" id="how-3">
+          <span class="how-bg-num">3</span>
+          <span class="how-step-label" style="color:rgba(0,0,0,.4)">STEP THREE</span>
+          <div class="how-step-title">GET YOUR SCORE</div>
+          <div class="how-step-desc" style="color:rgba(0,0,0,.6)">A scored report across 6 dimensions. Issues ranked by impact. Specific, actionable recommendations — so you know exactly what to fix first.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Proof Strip ─────────────────────────────── -->
+    <div class="proof-strip" id="proof-strip">
+      <div class="proof-inner">
+        <div class="proof-item">
+          <div class="proof-num" data-count="100">0</div>
+          <div class="proof-label">MAX PAGES PER CRAWL</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-num" data-count="8">0</div>
+          <div class="proof-label">AI BOTS TRACKED</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-num" data-count="6">0</div>
+          <div class="proof-label">SCORING DIMENSIONS</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-num" data-count="100">0</div>
+          <div class="proof-label">POINT SCORING SCALE</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CTA ─────────────────────────────────────── -->
+    <div class="cta-block" id="cta-block">
+      <div class="cta-eyebrow">FREE · NO ACCOUNT NEEDED · INSTANT RESULTS</div>
+      <div class="cta-title" id="cta-title">IS YOUR SITE<br>AI-READY?</div>
+      <div class="cta-sub">Run a full AI SEO audit in seconds. See exactly where you stand — and what to fix first.</div>
+      <a href="index.html" class="cta-btn" id="cta-btn">START YOUR FREE AUDIT →</a>
+    </div>
+
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────── -->
+  <footer class="home-footer">
+    <div class="home-footer-inner">
+      <span class="footer-logo">AI SEO CRAWLER</span>
+      <span class="footer-copy">AUDIT YOUR SITE FOR THE AGE OF AI SEARCH</span>
+      <nav class="footer-nav">
+        <a href="about.html" class="footer-btn">ABOUT</a>
+        <a href="index.html" class="footer-btn">LAUNCH APP →</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="cat.js"></script>
+
+  <script>
+    /* ─────────────────────────────────────────────
+       LENIS — Smooth scroll
+    ───────────────────────────────────────────── */
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+    });
+
+    // Keep GSAP ScrollTrigger in sync with Lenis
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(time => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+
+    /* ─────────────────────────────────────────────
+       GSAP — Register plugins
+    ───────────────────────────────────────────── */
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* ─────────────────────────────────────────────
+       ENTRANCE ANIMATION (page load)
+    ───────────────────────────────────────────── */
+    const entrance = gsap.timeline({
+      defaults: { ease: 'power3.out', duration: 0.65 }
+    });
+
+    // Set initial states before animating
+    gsap.set('#site-header', { y: -55, opacity: 0 });
+    gsap.set('#hc-main',     { y: 70, opacity: 0, scale: 0.97 });
+    gsap.set('#hc-score',    { y: 45, opacity: 0, scale: 0.95 });
+    gsap.set(['#hc-stat-1', '#hc-stat-2', '#hc-stat-3'], { y: 40, opacity: 0 });
+    gsap.set('#ticker',      { opacity: 0 });
+
+    entrance
+      .to('#site-header',  { y: 0, opacity: 1, duration: 0.5 })
+      .to('#hc-main',      { y: 0, opacity: 1, scale: 1, duration: 0.75 }, '-=0.25')
+      .to('#hc-score',     { y: 0, opacity: 1, scale: 1, duration: 0.55 }, '-=0.5')
+      .to('#hc-stat-1',    { y: 0, opacity: 1, duration: 0.45 }, '-=0.4')
+      .to('#hc-stat-2',    { y: 0, opacity: 1, duration: 0.45 }, '-=0.35')
+      .to('#hc-stat-3',    { y: 0, opacity: 1, duration: 0.45 }, '-=0.35')
+      .to('#ticker',       { opacity: 1, duration: 0.4 }, '-=0.2');
+
+    /* ─────────────────────────────────────────────
+       COUNTER ANIMATIONS
+    ───────────────────────────────────────────── */
+    function countUp(el, delay = 0) {
+      const target = parseInt(el.dataset.count, 10);
+      const obj = { val: 0 };
+      gsap.to(obj, {
+        val: target,
+        duration: 1.6,
+        ease: 'power2.out',
+        delay,
+        onUpdate() { el.textContent = Math.round(obj.val); }
+      });
+    }
+
+    // Hero counters — fire after entrance settles
+    entrance.add(() => {
+      countUp(document.getElementById('score-num'), 0);
+      document.querySelectorAll('#hc-stat-1 [data-count], #hc-stat-2 [data-count], #hc-stat-3 [data-count]')
+        .forEach((el, i) => countUp(el, i * 0.08));
+    }, '-=1.2');
+
+    // Grade badge pop-in
+    gsap.set('#score-grade', { scale: 0.4, opacity: 0 });
+    entrance.to('#score-grade', { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(2.5)' }, '-=0.6');
+
+    /* ─────────────────────────────────────────────
+       SCROLL REVEALS
+    ───────────────────────────────────────────── */
+
+    // Section headers
+    ['#feat-header', '#how-header'].forEach(sel => {
+      gsap.from(sel, {
+        scrollTrigger: { trigger: sel, start: 'top 88%' },
+        y: 28, opacity: 0, duration: 0.55, ease: 'power2.out'
+      });
+    });
+
+    // Feature cards — staggered
+    gsap.from('.feat-card', {
+      scrollTrigger: { trigger: '#feat-bento', start: 'top 84%' },
+      y: 55, opacity: 0, scale: 0.97,
+      stagger: { amount: 0.45, from: 'start' },
+      duration: 0.6, ease: 'power2.out'
+    });
+
+    // How steps — sequential
+    gsap.from(['#how-1', '#how-2', '#how-3'], {
+      scrollTrigger: { trigger: '#how-grid', start: 'top 82%' },
+      y: 45, opacity: 0,
+      stagger: 0.15, duration: 0.6, ease: 'power2.out'
+    });
+
+    // Proof strip counters — fire on scroll
+    ScrollTrigger.create({
+      trigger: '#proof-strip',
+      start: 'top 88%',
+      once: true,
+      onEnter() {
+        gsap.from('.proof-item', {
+          y: 30, opacity: 0, stagger: 0.1, duration: 0.55, ease: 'power2.out'
+        });
+        document.querySelectorAll('.proof-num[data-count]')
+          .forEach((el, i) => countUp(el, i * 0.1));
+      }
+    });
+
+    // CTA block
+    gsap.from('#cta-block', {
+      scrollTrigger: { trigger: '#cta-block', start: 'top 88%' },
+      y: 35, opacity: 0, duration: 0.6, ease: 'power2.out'
+    });
+
+    gsap.from('#cta-title', {
+      scrollTrigger: { trigger: '#cta-block', start: 'top 80%' },
+      y: 22, opacity: 0, duration: 0.7, ease: 'power2.out', delay: 0.18
+    });
+
+    /* ─────────────────────────────────────────────
+       HOVER MICROINTERACTIONS
+    ───────────────────────────────────────────── */
+
+    // Bento stat cells lift on hover
+    ['#hc-stat-1', '#hc-stat-2', '#hc-stat-3', '#hc-score'].forEach(sel => {
+      const el = document.querySelector(sel);
+      if (!el) return;
+      el.style.cursor = 'default';
+      el.addEventListener('mouseenter', () =>
+        gsap.to(el, { y: -5, x: -5, boxShadow: '10px 10px 0 #000', duration: 0.2, ease: 'power2.out' })
+      );
+      el.addEventListener('mouseleave', () =>
+        gsap.to(el, { y: 0, x: 0, boxShadow: '5px 5px 0 #000', duration: 0.25, ease: 'power2.inOut' })
+      );
+    });
+
+    // Feature cards
+    document.querySelectorAll('.feat-card').forEach(el => {
+      el.addEventListener('mouseenter', () =>
+        gsap.to(el, { y: -5, x: -5, boxShadow: '10px 10px 0 #000', duration: 0.18, ease: 'power2.out' })
+      );
+      el.addEventListener('mouseleave', () =>
+        gsap.to(el, { y: 0, x: 0, boxShadow: '5px 5px 0 #000', duration: 0.22, ease: 'power2.inOut' })
+      );
+    });
+
+    // How steps
+    document.querySelectorAll('.how-step').forEach(el => {
+      el.addEventListener('mouseenter', () =>
+        gsap.to(el, { backgroundColor: el.classList.contains('how-step-highlight') ? '#ffe000' : '#fffbee', duration: 0.2 })
+      );
+      el.addEventListener('mouseleave', () =>
+        gsap.to(el, { backgroundColor: el.classList.contains('how-step-highlight') ? '#ffe000' : '#ffffff', duration: 0.2 })
+      );
+    });
+
+    // CTA button — press spring
+    const ctaBtn = document.getElementById('cta-btn');
+    if (ctaBtn) {
+      ctaBtn.addEventListener('mouseenter', () =>
+        gsap.to(ctaBtn, { y: -5, x: -5, boxShadow: '12px 12px 0 rgba(255,224,0,.35)', duration: 0.18, ease: 'power2.out' })
+      );
+      ctaBtn.addEventListener('mouseleave', () =>
+        gsap.to(ctaBtn, { y: 0, x: 0, boxShadow: '7px 7px 0 #000', duration: 0.22, ease: 'power2.inOut' })
+      );
+      ctaBtn.addEventListener('mousedown', () =>
+        gsap.to(ctaBtn, { y: 5, x: 5, boxShadow: '2px 2px 0 #000', duration: 0.08, ease: 'power1.in' })
+      );
+      ctaBtn.addEventListener('mouseup', () =>
+        gsap.to(ctaBtn, { y: -5, x: -5, boxShadow: '12px 12px 0 rgba(255,224,0,.35)', duration: 0.22, ease: 'back.out(2.5)' })
+      );
+    }
+
+    // Hero CTA same treatment
+    const heroCta = document.getElementById('hero-cta');
+    if (heroCta) {
+      heroCta.addEventListener('mousedown', () =>
+        gsap.to(heroCta, { y: 5, x: 5, boxShadow: '0px 0px 0 #000', duration: 0.08 })
+      );
+      heroCta.addEventListener('mouseup', () =>
+        gsap.to(heroCta, { y: -3, x: -3, boxShadow: '8px 8px 0 rgba(255,224,0,.5)', duration: 0.18, ease: 'back.out(2)' })
+      );
+    }
+
+    /* ─────────────────────────────────────────────
+       TICKER — pause on hover
+    ───────────────────────────────────────────── */
+    const tickerTrack = document.querySelector('.ticker-track');
+    if (tickerTrack) {
+      tickerTrack.addEventListener('mouseenter', () => {
+        tickerTrack.style.animationPlayState = 'paused';
+      });
+      tickerTrack.addEventListener('mouseleave', () => {
+        tickerTrack.style.animationPlayState = 'running';
+      });
+    }
+  </script>
+
+</body>
+</html>

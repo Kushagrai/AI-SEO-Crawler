@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About AI SEO Crawler — JSON-LD & Tool Documentation</title>
+  <meta name="description" content="AI SEO Crawler audits websites for visibility in AI-powered search engines. It analyzes robots.txt, sitemaps, semantic HTML, and Schema.org markup, producing a scored report with actionable recommendations." />
+  <link rel="canonical" href="about.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- ── Structured Data ─────────────────────────────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "@id": "#tool",
+        "name": "AI SEO Crawler",
+        "alternateName": "AI SEO Auditor",
+        "description": "A web-based crawler that audits websites for visibility in AI-powered search engines. It evaluates robots.txt AI-bot directives, sitemap completeness, semantic HTML quality, and Schema.org structured data coverage, then produces a scored 0–100 report with prioritised recommendations.",
+        "applicationCategory": "SEOApplication",
+        "applicationSubCategory": "Website Audit Tool",
+        "operatingSystem": "Any (browser-based)",
+        "softwareVersion": "1.0",
+        "featureList": [
+          "Crawls up to depth 3 following internal links",
+          "Parses robots.txt and checks access rules for 8 major AI bots",
+          "Validates sitemap.xml structure and URL coverage",
+          "Scores semantic HTML: H1 presence, meta description, canonical URL, word count, image alt text",
+          "Detects Schema.org JSON-LD structured data types per page",
+          "Aggregates issues across all crawled pages",
+          "Generates prioritised, actionable recommendations",
+          "Delivers real-time crawl progress via Server-Sent Events",
+          "Produces a 0–100 AI SEO score with letter grade (A+–F)"
+        ],
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "creator": {
+          "@type": "Organization",
+          "name": "Dusker Services",
+          "email": "nandini@duskerservices.in"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "#page",
+        "name": "AI SEO Crawler — Tool Documentation",
+        "description": "Complete documentation of the AI SEO Crawler: what it does, how it scores websites, which AI bots it tracks, and how to interpret results.",
+        "about": { "@id": "#tool" },
+        "mainEntity": { "@id": "#faq" }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is AI SEO?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "AI SEO is the practice of structuring a website so that AI-powered search engines and large language models can accurately crawl, parse, and cite its content. Unlike traditional SEO which optimises for keyword ranking, AI SEO focuses on machine-readability: clear semantic HTML, structured data (Schema.org JSON-LD), explicit robots.txt permissions for AI crawlers, and authoritative, well-organised content that AI systems can extract and reference with confidence."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which AI bots does this tool check?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The crawler checks robots.txt access rules for eight AI bots: GPTBot (OpenAI), ClaudeBot (Anthropic), PerplexityBot (Perplexity AI), Google-Extended (Google AI), Googlebot, Bingbot, FacebookBot, and Applebot. For each bot it reports whether access is explicitly allowed, explicitly blocked, or undefined (inherits the wildcard rule)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How is the AI SEO score calculated?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The score is calculated out of 100 across four weighted categories: Robots.txt (20 points) — rewards explicit AI-bot access and a valid crawl configuration; Sitemap (20 points) — rewards a well-formed sitemap.xml with adequate URL coverage; Semantics (35 points) — rewards correct H1 usage, meta descriptions, canonical tags, sufficient word count, and image alt text across crawled pages; Schema.org (25 points) — rewards the presence of JSON-LD structured data, particularly high-value types such as Article, Product, FAQPage, and Organization. A final letter grade (A+ to F) is assigned based on the total."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What crawl depths are available?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The crawler supports three depth levels. Depth 1 fetches only the URL entered (the seed page). Depth 2 fetches the seed page and all internal links found on it (one hop). Depth 3 fetches the seed page, all pages linked from it, and all pages linked from those pages (two hops). Greater depth provides a more representative site-wide score but takes longer."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does the Semantics score measure?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The Semantics score (up to 35 points) evaluates five on-page signals averaged across all crawled pages: presence of exactly one H1 heading per page; presence of a meta description between 50 and 160 characters; presence of a canonical link element; body word count of at least 300 words; and descriptive alt text on all images. These signals directly affect whether AI systems can identify, summarise, and correctly attribute page content."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why does Schema.org structured data matter for AI?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Schema.org JSON-LD provides machine-readable facts about page content: who wrote an article, what a product costs, what questions an FAQ answers, or how a recipe is prepared. AI search engines and LLMs use these facts to answer user queries with precision and to cite sources accurately. Pages with rich structured data are more likely to be cited, quoted, and summarised correctly by AI systems than pages with the same content in unstructured prose."
+            }
+          }
+        ]
+      },
+      {
+        "@type": "HowTo",
+        "name": "How to audit a website with AI SEO Crawler",
+        "description": "Step-by-step guide to running an AI SEO audit using the AI SEO Crawler tool.",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "position": 1,
+            "name": "Enter the URL",
+            "text": "Type or paste the full URL of the website you want to audit into the URL input field. The tool automatically prepends https:// if no protocol is specified."
+          },
+          {
+            "@type": "HowToStep",
+            "position": 2,
+            "name": "Select crawl depth",
+            "text": "Choose a crawl depth from the dropdown: Depth 1 for the seed page only, Depth 2 for the seed page plus one hop of internal links, or Depth 3 for two hops. Depth 2 is the recommended default for a representative audit."
+          },
+          {
+            "@type": "HowToStep",
+            "position": 3,
+            "name": "Start the crawl",
+            "text": "Click the CRAWL button. The tool begins crawling in real time, streaming progress updates. A progress bar shows pages crawled and current status."
+          },
+          {
+            "@type": "HowToStep",
+            "position": 4,
+            "name": "Review the score",
+            "text": "When the crawl completes, a 0–100 AI SEO score and letter grade are displayed, broken down into four category scores: Robots.txt, Sitemap, Semantics, and Schema."
+          },
+          {
+            "@type": "HowToStep",
+            "position": 5,
+            "name": "Act on recommendations",
+            "text": "The Recommendations section lists prioritised fixes ordered by impact. The Top Issues section lists specific problems found across all pages, each with a count of affected pages. The Pages table allows expanding any individual page to see its full audit detail."
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo" style="text-decoration:none;">AI SEO CRAWLER</a>
+      <span class="tagline">AUDIT YOUR SITE FOR AI SEARCH VISIBILITY</span>
+      <nav class="header-nav">
+        <a href="home.html" class="nav-btn">HOME</a>
+        <a href="index.html" class="nav-btn" style="margin-left:8px">← CRAWLER</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="about-main">
+
+    <!-- ── Hero ──────────────────────────────────────────── -->
+    <section class="about-hero card">
+      <div class="about-hero-label">TOOL DOCUMENTATION + STRUCTURED DATA</div>
+      <h1 class="about-h1">AI SEO Crawler</h1>
+      <p class="about-lead">A free, open audit tool that measures how visible your website is to AI-powered search engines — and tells you exactly how to improve it.</p>
+    </section>
+
+    <!-- ── What it does ───────────────────────────────────── -->
+    <section class="about-block card">
+      <h2 class="about-h2">What This Tool Does</h2>
+      <p>AI SEO Crawler fetches your website, follows internal links to the depth you specify, and evaluates four areas that determine whether AI systems can find, read, and cite your content accurately:</p>
+      <ol class="about-ol">
+        <li><strong>Robots.txt access</strong> — checks whether major AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, and four others) are explicitly allowed or blocked.</li>
+        <li><strong>Sitemap coverage</strong> — validates that a well-formed sitemap.xml exists and contains your pages.</li>
+        <li><strong>Semantic HTML quality</strong> — verifies H1 headings, meta descriptions, canonical links, sufficient word count, and descriptive image alt text on every crawled page.</li>
+        <li><strong>Schema.org structured data</strong> — detects JSON-LD markup and identifies high-value schema types that enable AI systems to extract facts directly from your pages.</li>
+      </ol>
+      <p>The output is a <strong>0–100 score</strong> with a letter grade, a ranked list of issues across all pages, and prioritised recommendations.</p>
+    </section>
+
+    <!-- ── Why AI SEO matters ─────────────────────────────── -->
+    <section class="about-block card">
+      <h2 class="about-h2">Why AI SEO Is Different from Traditional SEO</h2>
+      <p>Traditional search engines rank pages by matching keywords and measuring authority signals such as backlinks. AI search engines — including ChatGPT Search, Perplexity, Google AI Overviews, and Claude — work differently. They read and summarise content, then cite the sources they consider most reliable and machine-readable.</p>
+      <p>For your site to appear in AI-generated answers, three things must be true:</p>
+      <ul class="about-ul">
+        <li>AI bots must be <strong>permitted to crawl</strong> your site via robots.txt.</li>
+        <li>Your content must be <strong>structured clearly enough</strong> for a language model to extract facts, entities, and relationships without ambiguity.</li>
+        <li>Your pages must carry <strong>Schema.org JSON-LD</strong> that tells AI systems what type of content each page contains and who is responsible for it.</li>
+      </ul>
+      <p>This tool audits all three areas in a single pass and scores them so you can prioritise fixes by impact.</p>
+    </section>
+
+    <!-- ── Scoring ────────────────────────────────────────── -->
+    <section class="about-block card">
+      <h2 class="about-h2">How the Score Is Calculated</h2>
+      <div class="score-breakdown">
+        <div class="sb-row">
+          <div class="sb-cat">ROBOTS.TXT</div>
+          <div class="sb-pts">20 pts</div>
+          <div class="sb-desc">Full marks when AI bots are explicitly allowed and the robots.txt file is valid and accessible. Points are deducted for missing files, broad blocks, or undefined access for key AI crawlers.</div>
+        </div>
+        <div class="sb-row">
+          <div class="sb-cat">SITEMAP</div>
+          <div class="sb-pts">20 pts</div>
+          <div class="sb-desc">Full marks when a valid sitemap.xml exists at the standard path, is well-formed XML, and contains enough URLs to represent the site's content.</div>
+        </div>
+        <div class="sb-row">
+          <div class="sb-cat">SEMANTICS</div>
+          <div class="sb-pts">35 pts</div>
+          <div class="sb-desc">Averaged across all crawled pages. Checks for: one H1 per page, meta description (50–160 chars), canonical link, 300+ word body content, and alt text on all images.</div>
+        </div>
+        <div class="sb-row">
+          <div class="sb-cat">SCHEMA.ORG</div>
+          <div class="sb-pts">25 pts</div>
+          <div class="sb-desc">Rewards presence and variety of JSON-LD structured data. High-value types (Article, FAQPage, Product, Organization, HowTo) score additional bonus points.</div>
+        </div>
+      </div>
+      <div class="grade-table">
+        <div class="gt-row gt-head"><span>SCORE</span><span>GRADE</span><span>MEANING</span></div>
+        <div class="gt-row"><span>90–100</span><span class="gt-grade" style="background:#00C96B">A+</span><span>Excellent — site is highly visible to AI search engines</span></div>
+        <div class="gt-row"><span>80–89</span><span class="gt-grade" style="background:#00C96B">A</span><span>Strong — minor gaps only</span></div>
+        <div class="gt-row"><span>70–79</span><span class="gt-grade" style="background:#FFE000">B</span><span>Good — clear opportunities to improve</span></div>
+        <div class="gt-row"><span>60–69</span><span class="gt-grade" style="background:#FFE000">C</span><span>Average — several important signals missing</span></div>
+        <div class="gt-row"><span>50–59</span><span class="gt-grade" style="background:#E67E00;color:#fff">D</span><span>Weak — significant barriers to AI crawling</span></div>
+        <div class="gt-row"><span>0–49</span><span class="gt-grade" style="background:#FF2525;color:#fff">F</span><span>Poor — likely invisible to AI search engines</span></div>
+      </div>
+    </section>
+
+    <!-- ── AI Bots ─────────────────────────────────────────── -->
+    <section class="about-block card">
+      <h2 class="about-h2">AI Bots Tracked</h2>
+      <p>The tool checks your robots.txt for access rules applying to each of the following user-agent strings:</p>
+      <div class="bots-table">
+        <div class="bt-row bt-head"><span>BOT NAME</span><span>OPERATOR</span><span>PURPOSE</span></div>
+        <div class="bt-row"><span>GPTBot</span><span>OpenAI</span><span>Trains and powers ChatGPT search and knowledge</span></div>
+        <div class="bt-row"><span>ClaudeBot</span><span>Anthropic</span><span>Trains and powers Claude AI systems</span></div>
+        <div class="bt-row"><span>PerplexityBot</span><span>Perplexity AI</span><span>Powers Perplexity AI answer engine</span></div>
+        <div class="bt-row"><span>Google-Extended</span><span>Google</span><span>Feeds Google Gemini and AI Overviews</span></div>
+        <div class="bt-row"><span>Googlebot</span><span>Google</span><span>Core web index, also feeds AI features</span></div>
+        <div class="bt-row"><span>Bingbot</span><span>Microsoft</span><span>Powers Bing and Microsoft Copilot</span></div>
+        <div class="bt-row"><span>FacebookBot</span><span>Meta</span><span>Meta AI products and link previews</span></div>
+        <div class="bt-row"><span>Applebot</span><span>Apple</span><span>Powers Siri and Apple Intelligence</span></div>
+      </div>
+    </section>
+
+    <!-- ── FAQ ───────────────────────────────────────────── -->
+    <section class="about-block card">
+      <h2 class="about-h2">Frequently Asked Questions</h2>
+      <div class="faq-list">
+
+        <details class="faq-item">
+          <summary class="faq-q">What crawl depth should I use?</summary>
+          <p class="faq-a">Depth 2 is the recommended default. It crawls the seed page and all pages directly linked from it, giving a representative sample of the site without excessive crawl time. Use Depth 3 for a thorough audit of larger sites. Use Depth 1 to quickly test a single page.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">Does this tool modify my website?</summary>
+          <p class="faq-a">No. The crawler is read-only. It sends standard HTTP GET requests exactly as a browser or search engine bot would. It does not submit forms, create accounts, or write any data to your site.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">Why is Schema.org structured data important for AI?</summary>
+          <p class="faq-a">Schema.org JSON-LD provides machine-readable facts embedded directly in page HTML. AI systems use these facts to understand content type, authorship, dates, prices, ratings, and relationships between entities — allowing them to answer user questions accurately and cite sources with confidence. Pages without structured data force AI models to infer meaning from prose alone, which is less reliable and less likely to result in a citation.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">What if my robots.txt blocks AI bots?</summary>
+          <p class="faq-a">Blocking AI bots via robots.txt prevents them from crawling your content. This means your pages will not appear in AI-generated answers, summaries, or citations from those systems. The crawler identifies which bots are blocked and flags this in the Robots.txt score and recommendations. Whether to allow or block specific bots is a business decision — this tool reports the current state so you can make an informed choice.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">How accurate is the score?</summary>
+          <p class="faq-a">The score measures the technical signals that AI search engines are known to use when deciding whether to crawl, index, and cite content. It does not measure content quality, domain authority, or whether AI systems have already indexed your site. A high score indicates strong technical foundations; it does not guarantee citation. Conversely, a low score identifies concrete technical barriers that are within your control to fix.</p>
+        </details>
+
+      </div>
+    </section>
+
+    <!-- ── JSON-LD source ─────────────────────────────────── -->
+    <section class="about-block card">
+      <h2 class="about-h2">Structured Data on This Page</h2>
+      <p>This page includes four JSON-LD blocks in its <code>&lt;head&gt;</code> that describe the tool, this documentation page, a FAQ schema, and a HowTo schema. These are the same signal types the crawler looks for when auditing other websites.</p>
+      <p>You can inspect them by viewing the page source or using Google's Rich Results Test. The schema types used are: <code>SoftwareApplication</code>, <code>WebPage</code>, <code>FAQPage</code>, and <code>HowTo</code>.</p>
+    </section>
+
+  </main>
+
+  <style>
+    /* ── About-page specific styles ──────────────────── */
+    .about-main {
+      padding: 2rem;
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .about-hero {
+      background: var(--yellow);
+      padding: 2.5rem 2rem;
+    }
+
+    .about-hero-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      opacity: 0.6;
+      margin-bottom: 0.75rem;
+    }
+
+    .about-h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+
+    .about-lead {
+      font-size: 1.1rem;
+      font-weight: 500;
+      max-width: 680px;
+      line-height: 1.55;
+    }
+
+    .about-block {
+      padding: 2rem;
+    }
+
+    .about-h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      border-bottom: 3px solid var(--black);
+      padding-bottom: 0.6rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .about-block p {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      margin-bottom: 1rem;
+    }
+
+    .about-block p:last-child { margin-bottom: 0; }
+
+    .about-ol, .about-ul {
+      padding-left: 1.4rem;
+      margin: 0.75rem 0 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .about-ol li, .about-ul li {
+      font-size: 0.93rem;
+      line-height: 1.55;
+    }
+
+    /* Score breakdown */
+    .score-breakdown {
+      border: var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .sb-row {
+      display: grid;
+      grid-template-columns: 120px 60px 1fr;
+      gap: 1rem;
+      padding: 0.85rem 1rem;
+      border-bottom: 2px solid var(--black);
+      align-items: start;
+    }
+
+    .sb-row:last-child { border-bottom: none; }
+
+    .sb-cat {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+    }
+
+    .sb-pts {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--black);
+      opacity: 0.5;
+    }
+
+    .sb-desc {
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    /* Grade table */
+    .grade-table {
+      border: var(--border);
+    }
+
+    .gt-row {
+      display: grid;
+      grid-template-columns: 90px 60px 1fr;
+      gap: 1rem;
+      padding: 0.7rem 1rem;
+      border-bottom: 2px solid var(--black);
+      align-items: center;
+      font-size: 0.88rem;
+    }
+
+    .gt-row:last-child { border-bottom: none; }
+
+    .gt-head {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .gt-grade {
+      display: inline-block;
+      width: 36px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.15rem 0;
+      border: 2px solid var(--black);
+    }
+
+    /* Bots table */
+    .bots-table {
+      border: var(--border);
+    }
+
+    .bt-row {
+      display: grid;
+      grid-template-columns: 160px 160px 1fr;
+      gap: 1rem;
+      padding: 0.7rem 1rem;
+      border-bottom: 2px solid var(--black);
+      font-size: 0.88rem;
+      align-items: center;
+    }
+
+    .bt-row:last-child { border-bottom: none; }
+
+    .bt-head {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .bt-row:not(.bt-head) span:first-child {
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+
+    /* FAQ */
+    .faq-list { display: flex; flex-direction: column; gap: 0; }
+
+    .faq-item {
+      border: var(--border);
+      border-bottom: none;
+    }
+
+    .faq-item:last-child { border-bottom: var(--border); }
+
+    .faq-q {
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 1rem 1.1rem;
+      cursor: pointer;
+      list-style: none;
+      letter-spacing: 0.02em;
+    }
+
+    .faq-q::-webkit-details-marker { display: none; }
+
+    .faq-q::before {
+      content: '+ ';
+      font-weight: 700;
+      color: var(--black);
+      opacity: 0.4;
+    }
+
+    .faq-item[open] .faq-q::before { content: '− '; opacity: 0.4; }
+
+    .faq-item[open] {
+      background: var(--yellow);
+    }
+
+    .faq-a {
+      padding: 0 1.1rem 1rem;
+      font-size: 0.9rem;
+      line-height: 1.65;
+    }
+
+    code {
+      font-family: monospace;
+      font-size: 0.85em;
+      background: rgba(0,0,0,0.07);
+      padding: 0.1em 0.35em;
+    }
+
+    @media (max-width: 700px) {
+      .sb-row { grid-template-columns: 1fr; gap: 0.3rem; }
+      .gt-row { grid-template-columns: 70px 50px 1fr; font-size: 0.8rem; }
+      .bt-row { grid-template-columns: 1fr 1fr; }
+      .bt-row span:last-child { grid-column: 1 / -1; opacity: 0.7; }
+    }
+  </style>
+
+</body>
+</html>
