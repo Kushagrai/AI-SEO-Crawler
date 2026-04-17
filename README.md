@@ -1,5 +1,4 @@
 # AI-SEO-Crawler
-# AI SEO Crawler
 
 A website auditing tool that measures how visible your site is to AI-powered search engines and large language models (LLMs). Get a 0–100 score across six weighted dimensions with actionable recommendations.
 
